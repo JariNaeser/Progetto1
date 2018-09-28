@@ -1,0 +1,73 @@
+/* -------- GENERAL -------- */
+
+*{
+    font-family: helvetica;
+}
+
+obli{
+    color: red;
+}
+
+button{
+    background-color: #f43838;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:hover{
+    outline: solid;
+    outline-color: lightgray;
+}
+
+button:active{
+    color: lightgrey;
+}
+
+/* -------- WELCOME -------- */
+
+#WelcomeContent{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+}
+
+#WelcomeContent h1{
+    font-size: 70px;
+}
+
+/* -------- REGISTER -------- */
+
+#RegisterContainer{
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#RegisterContainer button{
+    width: 100%;
+}
+
+#RegisterContainer h1{
+    font-size: 50px;
+}
+
+/* -------- RESPONSIVE -------- */
+
+@media (min-width: 550px) {
+
+    #RegisterContainer{
+        left: 0%;
+        width: 100%;
+        transform: translate(0%);
+    }
+
+}

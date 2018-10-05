@@ -61,7 +61,7 @@ button:active{
 }
 
 /* -------- RESPONSIVE -------- */
-
+/*
 @media (min-width: 550px) {
 
     #RegisterContainer{
@@ -70,4 +70,4 @@ button:active{
         transform: translate(0%);
     }
 
-}
+}*/

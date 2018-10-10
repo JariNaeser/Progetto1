@@ -15,6 +15,9 @@
  * Date: 23.09.18
  * Time: 11:42
  */
+
+        echo $_POST['nome'];
+
         ?>
     </body>
 </html>

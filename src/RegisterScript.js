@@ -167,10 +167,20 @@ $('#buttonModifica').click(function(){
 });
 
 $('#buttonSalva').click(function(){
+    $("#mainRegister").html('<img class="imageCenter" src="../media/loading.gif">');
     $.ajax({
         type:"POST",
         url:"Saves.php",
-        data: {nome: name}
+        data: {name: nome},
+        success: function(data){
+            console.log("Transfer of " + data + " is OK.");
+            document.open();
+            document.write(data);
+            document.close();
+        },
+        error: function(data){
+            console.log("Couldn't transfer " + data);
+        }
     });
 });
 

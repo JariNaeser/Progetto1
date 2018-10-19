@@ -10,9 +10,9 @@
         <p>Welcome in saves</p>
         <?php
 
-            $name;
+            $name = $_POST['name'];
 
-            echo name;
+            echo $name;
 
         ?>
     </body>

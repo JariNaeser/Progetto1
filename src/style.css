@@ -88,6 +88,15 @@ td, th {
     padding: 8px;
 }
 
+/* -------- SAVES -------- */
+
+.imageCenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 /* -------- RESPONSIVE -------- */
 
 @media (max-width: 768px) {

@@ -7,14 +7,13 @@
     </head>
     <body>
 
-
+        <p>Welcome in saves</p>
         <?php
-        /**
- * Created by PhpStorm.
- * User: jarinaser
- * Date: 23.09.18
- * Time: 11:42
- */
+
+            $name;
+
+            echo name;
+
         ?>
     </body>
 </html>

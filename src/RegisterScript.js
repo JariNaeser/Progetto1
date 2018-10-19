@@ -20,6 +20,14 @@ var hobby;
 var professione;
 var validated = [false,false,false,false,false,false,false,false,false];
 
+/* ---------- Start Up ---------- */
+
+$(window).ready(function(){
+    console.log("Welcome on the Register page!");
+    $('#showInputs').hide();
+    $('#errorMessage').hide();
+});
+
 /* ---------- Events handler functions ---------- */
 
 function setIcon(id, method){
@@ -113,11 +121,24 @@ $('input[name=professione]').keyup(function(event){
 });
 
 $('#buttonAvanti').click(function(){
-    console.log(validated);
     if(allValidated()){
-        //$('#buttonAvanti').
+        if(hobby == undefined || hobby.length == 0){
+            hobby = "-";
+        }
+        if(professione == undefined || hobby.length == 0){
+            professione = "-";
+        }
+        $('#mainRegister').hide();
+        fillTable();
+        $('#showInputs').show();
+        $('#messages div').remove();
     }else{
-        //Insert all values in right format
+        $('#messages')
+            .append("<div class=\"alert alert-danger alert-dismissible\" " +
+                "id=\"errorMessage\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" " +
+                "aria-label=\"close\">&times;</a> <strong>Attenzione!" +
+                "</strong>Devi completare tutti i campi obbligatori nel modo corretto.</div>"
+            );
     }
 });
 
@@ -134,6 +155,23 @@ $('#buttonCancella').click(function(){
     setFalse('#indGenere');
     setFalse('#indHobby');
     setFalse('#indProfessione');
+    for(var i = 0; i < validated.length; i++){
+        validated[i] = false;
+    }
+});
+
+$('#buttonModifica').click(function(){
+    $('#table tr').remove();
+    $('#showInputs').hide();
+    $('#mainRegister').show();
+});
+
+$('#buttonSalva').click(function(){
+    $.ajax({
+        type:"POST",
+        url:"Saves.php",
+        data: {nome: name}
+    });
 });
 
 /* ---------- Responsive ---------- */
@@ -359,10 +397,26 @@ function isMultiple(num, ofWhat){
 }
 
 function allValidated(){
-    for(var i = 0; i < validated; i++){
+    for(var i = 0; i < validated.length; i++){
         if(!validated[i]){
             return false
         }
     }
     return true;
+}
+
+function fillTable(){
+
+    $('#table')
+        .append("<tr><td>Nome</td><td>" + nome + "</td></tr>")
+        .append("<tr><td>Cognome</td><td>" + cognome + "</td></tr>")
+        .append("<tr><td>Data di nascita</td><td>" + dataNascita + "</td></tr>")
+        .append("<tr><td>Numero civico</td><td>" + noCivico + "</td></tr>")
+        .append("<tr><td>Città</td><td>" + citta + "</td></tr>")
+        .append("<tr><td>Nap</td><td>" + nap + "</td></tr>")
+        .append("<tr><td>Numero di telefono</td><td>" + noTelefono + "</td></tr>")
+        .append("<tr><td>E-mail</td><td>" + email + "</td></tr>")
+        .append("<tr><td>Genere</td><td>" + genere + "</td></tr>")
+        .append("<tr><td>Hobby</td><td>" + hobby + "</td></tr>")
+        .append("<tr><td>Professione</td><td>" + professione + "</td></tr>");
 }

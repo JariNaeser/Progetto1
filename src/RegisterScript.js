@@ -122,10 +122,10 @@ $('input[name=professione]').keyup(function(event){
 
 $('#buttonAvanti').click(function(){
     if(allValidated()){
-        if(hobby == undefined || hobby.length == 0){
+        if(hobby == undefined || hobby.length == 0 || hobby == " "){
             hobby = "-";
         }
-        if(professione == undefined || hobby.length == 0){
+        if(professione == undefined || professione.length == 0 || professione == " "){
             professione = "-";
         }
         $('#mainRegister').hide();
@@ -171,7 +171,19 @@ $('#buttonSalva').click(function(){
     $.ajax({
         type:"POST",
         url:"Saves.php",
-        data: {name: nome},
+        data: {
+            nome: nome,
+            cognome: cognome,
+            dataNascita: dataNascita,
+            noCivico: noCivico,
+            citta: citta,
+            nap: nap,
+            noTelefono: noTelefono,
+            email: email,
+            genere: genere,
+            hobby: hobby,
+            professione: professione
+        },
         success: function(data){
             console.log("Transfer of " + data + " is OK.");
             document.open();
@@ -219,15 +231,19 @@ function testShortInput(regex, text){
 }
 
 function valName(text){
-    if(text.length > 0){
-        return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 0);
+    if(!isNullOrWhiteSpace(text)){
+        if(text.length > 0){
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 0);
+        }
     }
     validated[0] = false;
 }
 
 function valSurname(text){
-    if(text.length > 0){
-        return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 1);
+    if(!isNullOrWhiteSpace(text)){
+        if (text.length > 0) {
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 1);
+        }
     }
     validated[1] = false;
 }
@@ -324,17 +340,21 @@ function valBirthday(date){
 }
 
 function valNumeroCivico(text){
-    if(text.length > 0 && text.length < 6){
-        if(text[0] != "0"){
-            return testInput(/([^A-Za-z0-9])/, text, 3);
+    if(!isNullOrWhiteSpace(text)) {
+        if (text.length > 0 && text.length < 6) {
+            if (text[0] != "0") {
+                return testInput(/([^A-Za-z0-9])/, text, 3);
+            }
         }
     }
     validated[3] = false;
 }
 
 function valCitta(text){
-    if(text.length > 0 && text.length < 51){
-        return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 4);
+    if(!isNullOrWhiteSpace(text)) {
+        if (text.length > 0 && text.length < 51) {
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 4);
+        }
     }
     validated[4] = false;
 }
@@ -348,15 +368,17 @@ function valNap(nap){
 }
 
 function valNumeroTelefono(num){
-    if(num.length > 9 && num.length < 31){
-        return testInput(/([^0-9 +*#-])/, num, 6);
+    if(!isNullOrWhiteSpace(num)) {
+        if (num.length > 9 && num.length < 31) {
+            return testInput(/([^0-9 +*#-])/, num, 6);
+        }
     }
     validated[6] = false;
 }
 
 function valEmail(mail){
     // RegEx characters found on StackOverflow
-    var re = /(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    var re = /(([^<>()\[\]\.,:\s@\"]+(\.[^<>()\[\]\.,:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,:\s@\"]+\.)+[^<>()[\]\.,:\s@\"]{2,})$/i;
     if(mail.length > 4){
         if(mail.includes('@') && mail.includes('.')){
             for(var i = 0; i < mail.length; i++){
@@ -389,18 +411,29 @@ function valGenere(genere){
 }
 
 function valHobby(text){
-    if(text.length > 0 && text.length < 501){
-        return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,;:_])/, text);
+    if(!isNullOrWhiteSpace(text)) {
+        if (text.length > 0 && text.length < 501) {
+            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text);
+        }
     }
 }
 
 function valProfessione(text){
-    if(text.length > 0 && text.length < 501){
-        return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text);
+    if(!isNullOrWhiteSpace(text)) {
+        if (text.length > 0 && text.length < 501) {
+            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text);
+        }
     }
 }
 
 /* ---------- Helper Functions ---------- */
+
+function isNullOrWhiteSpace(text){
+    if (text.length == null || text.trim() === '') {
+        return true;
+    }
+    return false;
+}
 
 function isMultiple(num, ofWhat){
     return num % ofWhat == 0;

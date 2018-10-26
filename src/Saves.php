@@ -222,12 +222,9 @@
                 if(!isNullOrWhiteSpace(NO_CIVICO)) {
                     if (strlen(NO_CIVICO) > 0 && strlen(NO_CIVICO) < 6) {
                         if (preg_match("/([A-Za-z0-9])/", NO_CIVICO)) {
-                            if(preg_match("/([A-Za-z])/", NO_CIVICO[strlen(NO_CIVICO - 1)])){
-                                $temp = substr(NO_CIVICO, 0, strlen(NO_CIVICO)-2);
-                                if(preg_match("/([0-9])/", $temp)){
-                                    $valStatus[3] = true;
-                                    return true;
-                                }
+                            if(preg_match("/([0-9])/", substr(NO_CIVICO, 0, strlen(NO_CIVICO)-2))){
+                                $valStatus[3] = true;
+                                return true;
                             }
                         }
                     }
@@ -262,7 +259,7 @@
 
             function valNoTelefono(){
                 if(!isNullOrWhiteSpace(NO_TELEFONO)) {
-                    if (strlen(NO_TELEFONO) > 9 && strlen(NO_TELEFONO) < 31) {
+                    if (strlen(trim(NO_TELEFONO, " ")) > 9 && strlen(trim(NO_TELEFONO, " ")) < 31) {
                         if (preg_match("/([0-9 +*#-])/", NO_TELEFONO)) {
                             $valStatus[6] = true;
                             return true;

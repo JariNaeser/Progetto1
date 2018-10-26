@@ -396,7 +396,7 @@ function valNap(nap){
 
 function valNumeroTelefono(num){
     if(!isNullOrWhiteSpace(num)) {
-        if (num.length > 9 && num.length < 31) {
+        if ((num.replace(' ','').trim()).length > 9 && (num.replace(' ','').trim()).length < 31) {
             return testInput(/([^0-9 +*#-])/, num, 6);
         }
     }
@@ -476,11 +476,9 @@ function allValidated(){
 }
 
 function isLastChar(str){
-    if(str[str.length - 1].match(/[a-zA-Z]/)){
-        var rest = str.substr(0, str.length - 1);
-        if(rest.match(/[0-9]/)){
-            return true;
-        }
+    var rest = str.substr(0, str.length - 1);
+    if(rest.match(/[0-9]/)){
+        return true;
     }
     return false;
 }

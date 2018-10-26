@@ -25,6 +25,8 @@ var genere;
 var hobby;
 var professione;
 var validated = [false,false,false,false,false,false,false,false,false];
+var hobbyStatus = false;
+var professioneStatus = false;
 
 /* ---------- Start Up ---------- */
 
@@ -32,6 +34,8 @@ $(window).ready(function(){
     console.log("Welcome on the Register page!");
     $('#showInputs').hide();
     $('#errorMessage').hide();
+    $('#datePicker').css('color', 'rgb(194,194,194)');
+    $('#genere').css('color', 'rgb(194,194,194)');
 });
 
 /* ---------- Events handler functions ---------- */
@@ -112,6 +116,12 @@ $('#genere').blur(function(event){
     }else{
         $('#indGenere').css('color', FALSE_COLOR);
     }
+    if(genere == "M" || genere == "F"){
+        $('#genere').css('color', 'black');
+    }else{
+        $('#genere').css('color', 'rgb(194,194,194)');
+    }
+
 });
 
 // Hobby field
@@ -128,10 +138,10 @@ $('input[name=professione]').keyup(function(event){
 
 $('#buttonAvanti').click(function(){
     if(allValidated()){
-        if(hobby == undefined || hobby.length == 0 || hobby == " "){
+        if(!hobbyStatus){
             hobby = "-";
         }
-        if(professione == undefined || professione.length == 0 || professione == " "){
+        if(!professioneStatus){
             professione = "-";
         }
         $('#mainRegister').hide();
@@ -226,11 +236,21 @@ function testInput(regex, text, validatedNum){
     return true;
 }
 
-function testShortInput(regex, text){
+function testShortInput(regex, text, num){
     for(var i = 0; i < text.length; i++){
         if(regex.test(text[i])){
+            if(num == 0){
+                hobbyStatus = false;
+            }else{
+                professioneStatus = false;
+            }
             return false;
         }
+    }
+    if(num == 0){
+        hobbyStatus = true;
+    }else{
+        professioneStatus = true;
     }
     return true;
 }
@@ -348,7 +368,9 @@ function valNumeroCivico(text){
     if(!isNullOrWhiteSpace(text)) {
         if (text.length > 0 && text.length < 6) {
             if (text[0] != "0") {
-                return testInput(/([^A-Za-z0-9])/, text, 3);
+                if(isLastChar(text)){
+                    return testInput(/([^A-Za-z0-9])/, text, 3);
+                }
             }
         }
     }
@@ -418,7 +440,7 @@ function valGenere(genere){
 function valHobby(text){
     if(!isNullOrWhiteSpace(text)) {
         if (text.length > 0 && text.length < 501) {
-            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text);
+            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text, 0);
         }
     }
 }
@@ -426,7 +448,7 @@ function valHobby(text){
 function valProfessione(text){
     if(!isNullOrWhiteSpace(text)) {
         if (text.length > 0 && text.length < 501) {
-            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text);
+            return testShortInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ0-9 -.,:_])/, text, 1);
         }
     }
 }
@@ -453,6 +475,16 @@ function allValidated(){
     return true;
 }
 
+function isLastChar(str){
+    if(str[str.length - 1].match(/[a-zA-Z]/)){
+        var rest = str.substr(0, str.length - 1);
+        if(rest.match(/[0-9]/)){
+            return true;
+        }
+    }
+    return false;
+}
+
 function fillTable(){
 
     $('#table')
@@ -468,3 +500,16 @@ function fillTable(){
         .append("<tr><td>Hobby</td><td>" + hobby + "</td></tr>")
         .append("<tr><td>Professione</td><td>" + professione + "</td></tr>");
 }
+
+$('#datePicker').focus(function(){
+   $('#datePicker').css('color', 'black');
+});
+
+$('#datePicker').blur(function(){
+    console.log($('#datePicker').val());
+    if($('#datePicker').val() === ''){
+        $('#datePicker').css('color', 'rgb(194,194,194)');
+    }else{
+        $('#datePicker').css('color', 'black');
+    }
+});

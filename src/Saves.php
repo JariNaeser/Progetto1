@@ -222,8 +222,13 @@
                 if(!isNullOrWhiteSpace(NO_CIVICO)) {
                     if (strlen(NO_CIVICO) > 0 && strlen(NO_CIVICO) < 6) {
                         if (preg_match("/([A-Za-z0-9])/", NO_CIVICO)) {
-                            $valStatus[3] = true;
-                            return true;
+                            if(preg_match("/([A-Za-z])/", NO_CIVICO[strlen(NO_CIVICO - 1)])){
+                                $temp = substr(NO_CIVICO, 0, strlen(NO_CIVICO)-2);
+                                if(preg_match("/([0-9])/", $temp)){
+                                    $valStatus[3] = true;
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

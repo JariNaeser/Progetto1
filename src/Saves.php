@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <title>Saves</title>
+        <meta name="author" content="Jari Naeser">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" type="text/css" href="./style.css">
@@ -24,7 +25,9 @@
     </head>
 
     <style>
+
         h1{
+            padding-top: 15px;
             text-align: center;
             text-transform: uppercase;
             font-family: Helvetica;
@@ -35,32 +38,28 @@
             /* For all browsers */
             color: #f43838;
             border-color: #f43838;
-            background-color: #f43838;;
+            background-color: #f43838;
+        }
+
+        button{
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        table{
+
+        }
+
+        td{
+            overflow: hidden;
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
     </style>
 
-    <body>
-        <h1 class="col-md-12">Registrazioni effettuate oggi</h1><hr><br>
-
-        <!--
-
-        - Mettere a posto che legge tutte le righe del csv e non solo una
-
-        Provare con metodo:
-
-        $file = fopen('file.csv', 'r');
-        while (($line = fgetcsv($file)) !== FALSE) {
-            //$line[0] = '1004000018' in first iteration
-            print_r($line);
-        }
-        fclose($file);
-
-        - Mettere a posto animazione fra registrazione e display data
-        - Fare la tabella responsive
-        - Mettere a posto il bootstrap della pagina php(questa).
-
-        -->
+    <body class="col-md-12 col-centered">
+        <h1>Registrazioni effettuate oggi</h1><p id="date"></p><hr><br>
 
         <?php
             //Constants
@@ -75,9 +74,8 @@
             define(GENERE, htmlspecialchars($_POST['genere']));
             define(HOBBY, htmlspecialchars($_POST['hobby']));
             define(PROFESSIONE, htmlspecialchars($_POST['professione']));
-            define(REG_TUTTE, 'Registrazioni_tutte.csv');
-            define(REG_OGGI, 'Registrazione_' . date('Y-m-d') . ".csv");
-            define(DIRECTORY, './Registrazioni');
+            define(REG_TUTTE, './Registrazioni/Registrazioni_tutte.csv');
+            define(REG_OGGI, './Registrazioni/Registrazione_' . date('Y-m-d') . ".csv");
             define(SEPARATOR, ';');
 
             //Variables
@@ -86,56 +84,81 @@
             if(isEverythingValidated()){
                 saver();
                 reader();
+                addButton();
             }
 
             //Methods
 
             function saver(){
 
-                if(basename(__DIR__)  != 'Registrazione'){
-                    if (!file_exists(DIRECTORY)) {
-                        mkdir(DIRECTORY, 0777, true);
-                    }
-                    if(is_dir(DIRECTORY)) {
-                        chdir(DIRECTORY);
-                    }
+                if(!file_exists('Registrazioni')){
+                    mkdir('Registrazioni', 0777, true);
+                }
+
+                if(!file_exists(REG_TUTTE)){
+                    $fileAll = fopen(REG_TUTTE, "a") or die("Unable to open " . REG_TUTTE ."!");
+                    fwrite($fileAll, initializeCSV());
+                }
+
+                if(!file_exists(REG_OGGI)){
+                    $fileToday = fopen(REG_OGGI, "a") or die("Unable to open " . REG_OGGI . "!");
+                    fwrite($fileToday, initializeCSV());
                 }
 
                 $fileAll = fopen(REG_TUTTE, "a") or die("Unable to open " . REG_TUTTE ."!");
                 $fileToday = fopen(REG_OGGI, "a") or die("Unable to open " . REG_OGGI . "!");
 
-                fwrite($fileAll, addToCsv());
-                fwrite($fileToday, addToCsv());
+                if(strlen(NOME) > 0){
+                    fwrite($fileAll, addToCsv());
+                    fwrite($fileToday, addToCsv());
+                }
+
                 fclose($fileAll);
                 fclose($fileToday);
 
             }
 
+
+
             function reader(){
 
-                $table = "<table class=\"col-md-12\"><tr><td>Nome</td><td>Cognome</td><td>Data di Nascita</td><td>Numero Civico</td>
-                          <td>Città</td><td>NAP</td><td>Numero di Telefono</td><td>E-Mail</td><td>Genere</td>
-                          <td>Hobby</td><td>Professione</td></tr>";
+                $table = "<div style='overflow-x:auto;'><table><tr><td>Nome</td><td>Cognome</td><td>Data di Nascita</td>
+                          <td>Numero Civico</td><td>Città</td><td>NAP</td><td>Numero di Telefono</td><td>E-Mail</td>
+                          <td>Genere</td><td>Hobby</td><td>Professione</td></tr>";
 
                 $file = fopen(REG_OGGI, "r");
-                $data = array(11);
 
-                foreach (fgetcsv($file, 1000) as $row){
-                    if(count(explode(SEPARATOR, $row)) == 11){
-                        $table .= "<tr>";
-                        $data = explode(SEPARATOR, $row);
-                        for($i = 0; $i < 11; $i++){
-                            $table .= "<td>" . $data[$i] . "</td>";
+                if(count(fgetcsv($file)) > 0){
+                    while (($row = fgetcsv($file, 1000, SEPARATOR)) !== FALSE) {
+                        if(count($row) == 11){
+                            $table .= "<tr>";
+                            for($i = 0; $i < 11; $i++){
+                                $table .= "<td>" . $row[$i] . "</td>";
+                            }
+                            $table .= "</tr>";
                         }
-                        $table .= "</tr>";
                     }
+                    fclose($file);
                 }
 
-                $table .= "</table>";
-
-                fclose($file);
+                $table .= "</table></div>";
 
                 echo $table;
+            }
+
+            function addButton(){
+                echo "<br><br><a href='Welcome.html'>
+                                <button class='col-md-3' style='border-radius: 5px;'>
+                                    Torna alla Home
+                                </button>
+                              </a>";
+            }
+
+            function initializeCSV(){
+                return "Nome" . SEPARATOR . "Cognome" . SEPARATOR . "DataNascita" . SEPARATOR . "NumeroCivico"
+                    . SEPARATOR . "Citta" . SEPARATOR . "Nap" . SEPARATOR . "NumeroTelefono" . SEPARATOR
+                    . "EMail" . SEPARATOR . "Genere" . SEPARATOR . "Hobby" . SEPARATOR . "Professione" . "\n";
+
             }
 
             function addToCsv(){
@@ -298,4 +321,13 @@
 
         ?>
     </body>
+    <script>
+        //Writes actual date under the page title
+        var today = new Date();
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+        $('#date').text(year + "-" + month + "-" + day);
+        $('#date').css('color', 'gray');
+    </script>
 </html>

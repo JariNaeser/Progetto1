@@ -1,3 +1,9 @@
+/*
+    Main script of the Register page.
+    @author Jari Naeser
+ */
+
+
 /* ---------- Constants ---------- */
 
 const TRUE_CHAR = 'fa-check';
@@ -167,7 +173,6 @@ $('#buttonModifica').click(function(){
 });
 
 $('#buttonSalva').click(function(){
-    $("#mainRegister").html('<img class="imageCenter" src="../media/loading.gif">');
     $.ajax({
         type:"POST",
         url:"Saves.php",

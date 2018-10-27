@@ -368,8 +368,12 @@ function valNumeroCivico(text){
     if(!isNullOrWhiteSpace(text)) {
         if (text.length > 0 && text.length < 6) {
             if (text[0] != "0") {
-                if(isLastChar(text)){
+                if(text.length == 1){
                     return testInput(/([^A-Za-z0-9])/, text, 3);
+                }else{
+                    if(isLastChar(text)){
+                        return testInput(/([^A-Za-z0-9])/, text, 3);
+                    }
                 }
             }
         }

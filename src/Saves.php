@@ -50,6 +50,13 @@
 
         }
 
+        th{
+            overflow: hidden;
+            padding-left: 10px;
+            padding-right: 10px;
+            background-color: #efefef;
+        }
+
         td{
             overflow: hidden;
             padding-left: 10px;
@@ -122,9 +129,9 @@
 
             function reader(){
 
-                $table = "<div style='overflow-x:auto;'><table><tr><td>Nome</td><td>Cognome</td><td>Data di Nascita</td>
-                          <td>Numero Civico</td><td>Città</td><td>NAP</td><td>Numero di Telefono</td><td>E-Mail</td>
-                          <td>Genere</td><td>Hobby</td><td>Professione</td></tr>";
+                $table = "<div style='overflow-x:auto;'><table><tr><th>Nome</th><th>Cognome</th><th>Data di Nascita</th>
+                          <th>Numero Civico</th><th>Città</th><th>NAP</th><th>Numero di Telefono</th><th>E-Mail</th>
+                          <th>Genere</th><th>Hobby</th><th>Professione</th></tr>";
 
                 $file = fopen(REG_OGGI, "r");
 

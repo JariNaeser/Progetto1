@@ -78,6 +78,11 @@ $('input[name=dataNascita]').blur(function(event){
     setIcon('#indDataNascita', valBirthday(dataNascita));
 });
 
+$('input[name=dataNascita]').keyup(function(event){
+    dataNascita = $('input[name=dataNascita]').val();
+    setIcon('#indDataNascita', valBirthday(dataNascita));
+});
+
 // Civic number field
 $('input[name=noCivico]').keyup(function(event){
     noCivico = $('input[name=noCivico]').val();
@@ -515,3 +520,4 @@ $('#datePicker').blur(function(){
         $('#datePicker').css('color', 'black');
     }
 });
+

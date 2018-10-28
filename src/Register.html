@@ -69,7 +69,8 @@
                 <!-- Data Nascita -->
                 <div class="col-md-6">
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input is-large" placeholder="Data Nascita" name="dataNascita" type="date" id="datePicker">
+                        <input class="input is-large" placeholder="Data Nascita [yyyy-mm-dd]" name="dataNascita" type="text"
+                               onfocus="(this.type='date')" onblur="(this.type='text')" id="datePicker">
                         <span class="icon is-medium is-left">
                             <i class="fas fa-birthday-cake"></i>
                             <i><obli>*</obli></i>

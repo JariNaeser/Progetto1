@@ -263,7 +263,10 @@ function testShortInput(regex, text, num){
 function valName(text){
     if(!isNullOrWhiteSpace(text)){
         if(text.length > 0){
-            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 0);
+            if(text[0] == '-' || text[0] == '.'){
+                return false;
+            }
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/, text, 0);
         }
     }
     validated[0] = false;
@@ -272,7 +275,10 @@ function valName(text){
 function valSurname(text){
     if(!isNullOrWhiteSpace(text)){
         if (text.length > 0) {
-            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 1);
+            if(text[0] == '-' || text[0] == '.'){
+                return false;
+            }
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/, text, 1);
         }
     }
     validated[1] = false;

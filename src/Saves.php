@@ -193,7 +193,10 @@
             function valNome(){
                 if(!isNullOrWhiteSpace(NOME)){
                     if(strlen(NOME) > 0){
-                        if(preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/", NOME)){
+                        if(NOME[0] == '-' || NOME[0] == '.'){
+                            return false;
+                        }
+                        if(preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/", NOME)){
                             $valStatus[0] = true;
                             return true;
                         }
@@ -206,7 +209,10 @@
             function valCognome(){
                 if(!isNullOrWhiteSpace(COGNOME)) {
                     if (strlen(COGNOME)) {
-                        if (preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/", COGNOME)) {
+                        if(COGNOME[0] == '-' || COGNOME[0] == '.'){
+                            return false;
+                        }
+                        if (preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/", COGNOME)) {
                             $valStatus[1] = true;
                             return true;
                         }

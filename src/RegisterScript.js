@@ -157,7 +157,7 @@ $('#buttonAvanti').click(function(){
         $('#messages')
             .append("<div class=\"alert alert-danger alert-dismissible\" " +
                 "id=\"errorMessage\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" " +
-                "aria-label=\"close\">&times;</a> <strong>Attenzione!" +
+                "aria-label=\"close\">&times;</a><strong>Attenzione!" +
                 "</strong>Devi completare tutti i campi obbligatori nel modo corretto.</div>"
             );
     }

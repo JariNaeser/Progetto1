@@ -128,8 +128,6 @@
 
             }
 
-
-
             function reader(){
 
                 $table = "<div style='overflow-x:auto;'><table><tr><th>Nome</th><th>Cognome</th><th>Data di Nascita</th>
@@ -140,6 +138,8 @@
 
                 if(count(fgetcsv($file)) > 0){
                     while (($row = fgetcsv($file, 1000, SEPARATOR)) !== FALSE) {
+                        //With this control, lines containing commands that were intercepted by htmlspecialchars
+                        //won't be shown in the table (because we are using ';' as a separator).
                         if(count($row) == 11){
                             $table .= "<tr>";
                             for($i = 0; $i < 11; $i++){

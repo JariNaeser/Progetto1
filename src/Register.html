@@ -29,7 +29,8 @@
     </head>
     <body>
         <form class="container col-sm-8 mx-auto" id="mainRegister">
-            <h1 class="text-center">Registrati</h1><br>
+            <h1 class="text-center">Registrati</h1>
+            <br>
             <div class="d-md-flex">
                 <!-- Nome -->
                 <div class="col-md-6">
@@ -69,7 +70,7 @@
                 <!-- Data Nascita -->
                 <div class="col-md-6">
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input is-large" placeholder="Data Nascita [yyyy-mm-dd]" name="dataNascita" type="text"
+                        <input class="input is-large" placeholder="Data Nascita" name="dataNascita" type="text"
                                onfocus="(this.type='date')" onblur="(this.type='text')" id="datePicker">
                         <span class="icon is-medium is-left">
                             <i class="fas fa-birthday-cake"></i>
@@ -225,8 +226,16 @@
             <div class="col-md-12 col-centered">
                 <button name="cancella" type="reset" class="col-md-3" id="buttonCancella">Cancella</button>
                 <button name="avanti" type="button" class="col-md-3" id="buttonAvanti">Avanti</button>
-            </div>
-
+            </div><br><br>
+            <span data-toggle="tooltip" data-html="true" data-placement="top"
+                  title="<obli>*</obli>: Campo obbligatorio<br>
+                  <i class='fas fa-times' style='color: #f76a6a'></i>: Valore non accettato<br>
+                  <i class='fas fa-check' style='color: #abdd92'></i>: Valore accettato<br>
+                  Formato della data di nascita: [yyyy-mm-dd]">
+                <p class="col-md-12 col-centered" style="color: gray">
+                    <i>Help</i>
+                </p>
+            </span>
             <!-- Error message -->
             <br><br>
             <div id="messages"></div>

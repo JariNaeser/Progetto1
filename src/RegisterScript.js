@@ -532,4 +532,3 @@ $('#datePicker').blur(function(){
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
-

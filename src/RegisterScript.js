@@ -173,7 +173,6 @@ $('#buttonCancella').click(function(){
     setFalse('#indNap');
     setFalse('#indNoTelefono');
     setFalse('#indEMail');
-    setFalse('#indGenere');
     setFalse('#indHobby');
     setFalse('#indProfessione');
     for(var i = 0; i < validated.length; i++){
@@ -181,13 +180,13 @@ $('#buttonCancella').click(function(){
     }
 });
 
-$('#buttonModifica').click(function(){
+$('#buttonCorreggi').click(function(){
     $('#table tr').remove();
     $('#showInputs').hide();
     $('#mainRegister').show();
 });
 
-$('#buttonSalva').click(function(){
+$('#buttonRegistra').click(function(){
     $.ajax({
         type:"POST",
         url:"Saves.php",
@@ -422,7 +421,7 @@ function valEmail(mail){
     // RegEx characters found on StackOverflow
     var re = /(([^<>()\[\]\.,:\s@\"]+(\.[^<>()\[\]\.,:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,:\s@\"]+\.)+[^<>()[\]\.,:\s@\"]{2,})$/i;
     if(mail.length > 4){
-        if(mail.includes('@') && mail.includes('.')){
+        if(mail.includes('@') && mail.includes('.') && !mail.includes(';')){
             for(var i = 0; i < mail.length; i++){
                 if(re.test(mail[i])){
                     validated[7] = false;
@@ -471,14 +470,11 @@ function valProfessione(text){
 /* ---------- Helper Functions ---------- */
 
 function isNullOrWhiteSpace(text){
-    if (text.length == null || text.trim() === '') {
-        return true;
-    }
-    return false;
+    return (text.length === null || text.trim() === '');
 }
 
 function isMultiple(num, ofWhat){
-    return num % ofWhat == 0;
+    return num % ofWhat === 0;
 }
 
 function allValidated(){
@@ -492,10 +488,7 @@ function allValidated(){
 
 function isLastChar(str){
     var rest = str.substr(0, str.length - 1);
-    if(rest.match(/[0-9]/)){
-        return true;
-    }
-    return false;
+    return rest.match(/[0-9]/);
 }
 
 function fillTable(){

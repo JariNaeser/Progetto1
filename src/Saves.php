@@ -132,7 +132,7 @@
 
                 $table = "<div style='overflow-x:auto;'><table><tr><th>Nome</th><th>Cognome</th><th>Data di Nascita</th>
                           <th>Numero Civico</th><th>Città</th><th>NAP</th><th>Numero di Telefono</th><th>E-Mail</th>
-                          <th>Genere</th><th>Hobby</th><th>Professione</th></tr>";
+                          <th>Genere</th><th>Hobby</th><th>Professione</th><th>Data e Ora Salvataggio</th></tr>";
 
                 $file = fopen(REG_OGGI, "r");
 
@@ -140,9 +140,9 @@
                     while (($row = fgetcsv($file, 1000, SEPARATOR)) !== FALSE) {
                         //With this control, lines containing commands that were intercepted by htmlspecialchars
                         //won't be shown in the table (because we are using ';' as a separator).
-                        if(count($row) == 11){
+                        if(count($row) == 12){
                             $table .= "<tr>";
-                            for($i = 0; $i < 11; $i++){
+                            for($i = 0; $i < 12; $i++){
                                 $table .= "<td>" . $row[$i] . "</td>";
                             }
                             $table .= "</tr>";
@@ -167,14 +167,16 @@
             function initializeCSV(){
                 return "Nome" . SEPARATOR . "Cognome" . SEPARATOR . "DataNascita" . SEPARATOR . "NumeroCivico"
                     . SEPARATOR . "Citta" . SEPARATOR . "Nap" . SEPARATOR . "NumeroTelefono" . SEPARATOR
-                    . "EMail" . SEPARATOR . "Genere" . SEPARATOR . "Hobby" . SEPARATOR . "Professione" . "\n";
+                    . "EMail" . SEPARATOR . "Genere" . SEPARATOR . "Hobby" . SEPARATOR . "Professione" . SEPARATOR
+                    . "DataOraSalvataggio" . "\n";
 
             }
 
             function addToCsv(){
+                $actualDate = date("Y-m-d") . " " . date("H:i:s");
                 return NOME . SEPARATOR . COGNOME . SEPARATOR . DATA_NASCITA . SEPARATOR . NO_CIVICO . SEPARATOR .
                     CITTA . SEPARATOR . NAP . SEPARATOR . NO_TELEFONO . SEPARATOR . EMAIL . SEPARATOR . GENERE .
-                    SEPARATOR . HOBBY . SEPARATOR . PROFESSIONE . "\n";
+                    SEPARATOR . HOBBY . SEPARATOR . PROFESSIONE . SEPARATOR . $actualDate . "\n";
             }
 
             function isEverythingValidated(){

@@ -49,6 +49,10 @@
             margin-bottom: 15px;
         }
 
+        table{
+
+        }
+
         th{
             overflow: hidden;
             padding-left: 10px;
@@ -72,7 +76,6 @@
             define(NOME, htmlspecialchars($_POST['nome']));
             define(COGNOME, htmlspecialchars($_POST['cognome']));
             define(DATA_NASCITA, htmlspecialchars($_POST['dataNascita']));
-            define(VIA, htmlspecialchars($_POST['via']));
             define(NO_CIVICO, htmlspecialchars($_POST['noCivico']));
             define(CITTA, htmlspecialchars($_POST['citta']));
             define(NAP, htmlspecialchars($_POST['nap']));
@@ -86,7 +89,7 @@
             define(SEPARATOR, ';');
 
             //Variables
-            $valStatus = array_fill(0,10,false);
+            $valStatus = array_fill(0,9,false);
 
             if(isEverythingValidated()){
                 saver();
@@ -128,8 +131,8 @@
             function reader(){
 
                 $table = "<div style='overflow-x:auto;'><table><tr><th>Nome</th><th>Cognome</th><th>Data di Nascita</th>
-                          <th>Via</th><th>Numero Civico</th><th>Città</th><th>NAP</th><th>Numero di Telefono</th>
-                          <th>E-Mail</th><th>Genere</th><th>Hobby</th><th>Professione</th><th>Data e Ora Salvataggio</th></tr>";
+                          <th>Numero Civico</th><th>Città</th><th>NAP</th><th>Numero di Telefono</th><th>E-Mail</th>
+                          <th>Genere</th><th>Hobby</th><th>Professione</th><th>Data e Ora Salvataggio</th></tr>";
 
                 $file = fopen(REG_OGGI, "r");
 
@@ -137,9 +140,9 @@
                     while (($row = fgetcsv($file, 1000, SEPARATOR)) !== FALSE) {
                         //With this control, lines containing commands that were intercepted by htmlspecialchars
                         //won't be shown in the table (because we are using ';' as a separator).
-                        if(count($row) == 13){
+                        if(count($row) == 12){
                             $table .= "<tr>";
-                            for($i = 0; $i < 13; $i++){
+                            for($i = 0; $i < 12; $i++){
                                 $table .= "<td>" . $row[$i] . "</td>";
                             }
                             $table .= "</tr>";
@@ -162,8 +165,8 @@
             }
 
             function initializeCSV(){
-                return "Nome" . SEPARATOR . "Cognome" . SEPARATOR . "DataNascita" . SEPARATOR . "Via" . SEPARATOR
-                    . "NumeroCivico" . SEPARATOR . "Citta" . SEPARATOR . "Nap" . SEPARATOR . "NumeroTelefono" . SEPARATOR
+                return "Nome" . SEPARATOR . "Cognome" . SEPARATOR . "DataNascita" . SEPARATOR . "NumeroCivico"
+                    . SEPARATOR . "Citta" . SEPARATOR . "Nap" . SEPARATOR . "NumeroTelefono" . SEPARATOR
                     . "EMail" . SEPARATOR . "Genere" . SEPARATOR . "Hobby" . SEPARATOR . "Professione" . SEPARATOR
                     . "DataOraSalvataggio" . "\n";
 
@@ -171,9 +174,9 @@
 
             function addToCsv(){
                 $actualDate = date("Y-m-d") . " " . date("H:i:s");
-                return NOME . SEPARATOR . COGNOME . SEPARATOR . DATA_NASCITA . SEPARATOR . VIA . SEPARATOR . NO_CIVICO
-                    . SEPARATOR . CITTA . SEPARATOR . NAP . SEPARATOR . NO_TELEFONO . SEPARATOR . EMAIL . SEPARATOR
-                    . GENERE . SEPARATOR . HOBBY . SEPARATOR . PROFESSIONE . SEPARATOR . $actualDate . "\n";
+                return NOME . SEPARATOR . COGNOME . SEPARATOR . DATA_NASCITA . SEPARATOR . NO_CIVICO . SEPARATOR .
+                    CITTA . SEPARATOR . NAP . SEPARATOR . NO_TELEFONO . SEPARATOR . EMAIL . SEPARATOR . GENERE .
+                    SEPARATOR . HOBBY . SEPARATOR . PROFESSIONE . SEPARATOR . $actualDate . "\n";
             }
 
             function isEverythingValidated(){
@@ -233,34 +236,18 @@
                 return false;
             }
 
-        function valVia(){
-            if(!isNullOrWhiteSpace(VIA)) {
-                if (strlen(VIA)) {
-                    if(VIA[0] == '-' || VIA[0] == '.'){
-                        return false;
-                    }
-                    if (preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/", VIA)) {
-                        $valStatus[3] = true;
-                        return true;
-                    }
-                }
-            }
-            $valStatus[3] = false;
-            return false;
-        }
-
             function valNoCivico(){
                 if(!isNullOrWhiteSpace(NO_CIVICO)) {
                     if (strlen(NO_CIVICO) > 0 && strlen(NO_CIVICO) < 6) {
                         if (preg_match("/([A-Za-z0-9])/", NO_CIVICO)) {
                             if(preg_match("/([0-9])/", substr(NO_CIVICO, 0, strlen(NO_CIVICO)-2))){
-                                $valStatus[4] = true;
+                                $valStatus[3] = true;
                                 return true;
                             }
                         }
                     }
                 }
-                $valStatus[4] = false;
+                $valStatus[3] = false;
                 return false;
             }
 
@@ -268,23 +255,23 @@
                 if(!isNullOrWhiteSpace(CITTA)) {
                     if (strlen(CITTA) > 0 && strlen(CITTA) < 31) {
                         if (preg_match("/([A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/", CITTA)) {
-                            $valStatus[5] = true;
+                            $valStatus[4] = true;
                             return true;
                         }
                     }
                 }
-                $valStatus[5] = false;
+                $valStatus[4] = false;
                 return false;
             }
 
             function valNap(){
                 if(strlen(NAP) == 4 || strlen(NAP) == 5){
                     if(preg_match("/([0-9])/",NAP)){
-                        $valStatus[6] = true;
+                        $valStatus[5] = true;
                         return true;
                     }
                 }
-                $valStatus[6] = false;
+                $valStatus[5] = false;
                 return false;
             }
 
@@ -292,32 +279,32 @@
                 if(!isNullOrWhiteSpace(NO_TELEFONO)) {
                     if (strlen(trim(NO_TELEFONO, " ")) > 9 && strlen(trim(NO_TELEFONO, " ")) < 31) {
                         if (preg_match("/([0-9 +*#-])/", NO_TELEFONO)) {
-                            $valStatus[7] = true;
+                            $valStatus[6] = true;
                             return true;
                         }
                     }
                 }
-                $valStatus[7] = false;
+                $valStatus[6] = false;
                 return false;
             }
 
             function valEMail(){
                 if(preg_match('/([^;])/', EMAIL)){
                     if (filter_var(EMAIL, FILTER_VALIDATE_EMAIL)) {
-                        $valStatus[8] = true;
+                        $valStatus[7] = true;
                         return true;
                     }
                 }
-                $valStatus[8] = false;
+                $valStatus[7] = false;
                 return false;
             }
 
             function valGenere(){
                 if(GENERE == "M" || GENERE == "F"){
-                    $valStatus[9] = true;
+                    $valStatus[8] = true;
                     return true;
                 }
-                $valStatus[9] = false;
+                $valStatus[8] = false;
                 return false;
             }
 

@@ -16,6 +16,7 @@ const FALSE_COLOR = '#f76a6a';
 var nome;
 var cognome;
 var dataNascita;
+var via;
 var noCivico;
 var citta;
 var nap;
@@ -24,7 +25,7 @@ var email;
 var genere;
 var hobby;
 var professione;
-var validated = [false,false,false,false,false,false,false,false,false];
+var validated = [false,false,false,false,false,false,false,false,false,false];
 var hobbyStatus = false;
 var professioneStatus = false;
 
@@ -81,6 +82,12 @@ $('input[name=dataNascita]').blur(function(event){
 $('input[name=dataNascita]').keyup(function(event){
     dataNascita = $('input[name=dataNascita]').val();
     setIcon('#indDataNascita', valBirthday(dataNascita));
+});
+
+// Via field
+$('input[name=via]').keyup(function(event){
+    via = $('input[name=via]').val();
+    setIcon('#indVia', valVia(via));
 });
 
 // Civic number field
@@ -168,6 +175,7 @@ $('#buttonCancella').click(function(){
     setFalse('#indNome');
     setFalse('#indCognome');
     setFalse('#indDataNascita');
+    setFalse('#indVia');
     setFalse('#indNoCivico');
     setFalse('#indCitta');
     setFalse('#indNap');
@@ -194,6 +202,7 @@ $('#buttonRegistra').click(function(){
             nome: nome,
             cognome: cognome,
             dataNascita: dataNascita,
+            via: via,
             noCivico: noCivico,
             citta: citta,
             nap: nap,
@@ -374,47 +383,60 @@ function valBirthday(date){
     validated[2] = false;
 }
 
-function valNumeroCivico(text){
-    if(!isNullOrWhiteSpace(text)) {
-        if (text.length > 0 && text.length < 6) {
-            if (text[0] != "0") {
-                if(text.length == 1){
-                    return testInput(/([^A-Za-z0-9])/, text, 3);
-                }else{
-                    if(isLastChar(text)){
-                        return testInput(/([^A-Za-z0-9])/, text, 3);
-                    }
-                }
+function valVia(text){
+    if(!isNullOrWhiteSpace(text)){
+        if (text.length > 0) {
+            if(text[0] == '-' || text[0] == '.'){
+                return false;
             }
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -.])/, text, 3);
         }
     }
     validated[3] = false;
 }
 
-function valCitta(text){
+
+function valNumeroCivico(text){
     if(!isNullOrWhiteSpace(text)) {
-        if (text.length > 0 && text.length < 51) {
-            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 4);
+        if (text.length > 0 && text.length < 6) {
+            if (text[0] != "0") {
+                if(text.length == 1){
+                    return testInput(/([^A-Za-z0-9])/, text, 4);
+                }else{
+                    if(isLastChar(text)){
+                        return testInput(/([^A-Za-z0-9])/, text, 4);
+                    }
+                }
+            }
         }
     }
     validated[4] = false;
 }
 
+function valCitta(text){
+    if(!isNullOrWhiteSpace(text)) {
+        if (text.length > 0 && text.length < 51) {
+            return testInput(/([^A-Za-zöäüÖÄÜàèìòùÀÈÌÒÙ -])/, text, 5);
+        }
+    }
+    validated[5] = false;
+}
+
 function valNap(nap){
     nap = nap.toString();
     if(nap.length == 4 || nap.length == 5){
-        return testInput(/([^0-9])/, nap, 5);
+        return testInput(/([^0-9])/, nap, 6);
     }
-    validated[5] = false;
+    validated[6] = false;
 }
 
 function valNumeroTelefono(num){
     if(!isNullOrWhiteSpace(num)) {
         if ((num.replace(' ','').trim()).length > 9 && (num.replace(' ','').trim()).length < 31) {
-            return testInput(/([^0-9 +*#-])/, num, 6);
+            return testInput(/([^0-9 +*#-])/, num, 7);
         }
     }
-    validated[6] = false;
+    validated[7] = false;
 }
 
 function valEmail(mail){
@@ -424,7 +446,7 @@ function valEmail(mail){
         if(mail.includes('@') && mail.includes('.') && !mail.includes(';')){
             for(var i = 0; i < mail.length; i++){
                 if(re.test(mail[i])){
-                    validated[7] = false;
+                    validated[8] = false;
                     return false;
                 }
             }
@@ -433,22 +455,22 @@ function valEmail(mail){
                 if(splitted.length == 2){
                     var s2 = splitted[1];
                     if(s2[s2.length - 1] != '.' && s2.includes('.')){
-                        validated[7] = true;
+                        validated[8] = true;
                         return true;
                     }
                 }
             }
         }
     }
-    validated[7] = false;
+    validated[8] = false;
 }
 
 function valGenere(genere){
     if(genere == "M" || genere == "F"){
-        validated[8] = true;
+        validated[9] = true;
         return true;
     }
-    validated[8] = false;
+    validated[9] = false;
 }
 
 function valHobby(text){
@@ -497,6 +519,7 @@ function fillTable(){
         .append("<tr><td>Nome</td><td>" + nome + "</td></tr>")
         .append("<tr><td>Cognome</td><td>" + cognome + "</td></tr>")
         .append("<tr><td>Data di nascita</td><td>" + dataNascita + "</td></tr>")
+        .append("<tr><td>Via</td><td>" + via + "</td></tr>")
         .append("<tr><td>Numero civico</td><td>" + noCivico + "</td></tr>")
         .append("<tr><td>Città</td><td>" + citta + "</td></tr>")
         .append("<tr><td>Nap</td><td>" + nap + "</td></tr>")
